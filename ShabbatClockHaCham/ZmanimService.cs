@@ -8,7 +8,7 @@ namespace ShabbatClockHaCham
         {
 
         }
-        internal DateTime ResolveSunsetDateTime(object location)
+        internal DateTime ResolveShabbatTime(object location)
         {
             return DateTime.Now.AddMinutes(3);
         }

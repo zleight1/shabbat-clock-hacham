@@ -1,42 +1,43 @@
 ﻿using System;
-using System.Timers;
+using System.Windows.Threading;
 
 namespace ShabbatClockHaCham
 {
     public class ShabbatTimer
     {
-        public double PostSunsetDelay { get; set; }
-        public DateTime SunsetDateTime { get; set; }
-        private Timer Timer { get; set; }
+        public double PostShabbatDelay { get; set; }
+        public DateTime ShabbatTime { get; set; }
+        private DispatcherTimer Timer { get; set; }
         public bool Enabled { get; internal set; }
 
         public event EventHandler<ShabbatTimerEventArgs> ShabbatTick;
 
         public ShabbatTimer(DateTime sunsetDateTime, double postSunsetDelay)
         {
-            SunsetDateTime = sunsetDateTime;
-            Timer = new Timer();
-            PostSunsetDelay = postSunsetDelay;
-            Timer.Elapsed += new ElapsedEventHandler(TimerTick);
-            Timer.Interval = 1000;
+            ShabbatTime = sunsetDateTime;
+            Timer = new DispatcherTimer();
+            PostShabbatDelay = postSunsetDelay;
+            Timer.Tick += new EventHandler(TimerTick);
+            Timer.Interval = TimeSpan.FromMilliseconds(500);
         }
 
         // This is the method to run when the timer is raised.
-        private void TimerTick(object sender, ElapsedEventArgs elapsedEventArgs)
+        private void TimerTick(object sender, EventArgs elapsedEventArgs)
         {
-            if (elapsedEventArgs.SignalTime.CompareTo(SunsetDateTime.AddMinutes(PostSunsetDelay)) >= 0)
+            var signalTime = DateTime.Now;
+            if (signalTime.CompareTo(ShabbatTime.AddMinutes(PostShabbatDelay)) >= 0)
             {
                 TimerElapsed();
                 return;
 
             }
             
-            ShabbatTick?.Invoke(this, new ShabbatTimerEventArgs(ShabbatTickType.Tick, CalculateRemainingSeconds(elapsedEventArgs.SignalTime)));
+            ShabbatTick?.Invoke(this, new ShabbatTimerEventArgs(ShabbatTickType.Tick, CalculateRemainingSeconds(signalTime)));
         }
 
         private double CalculateRemainingSeconds(DateTime signalTime)
         {
-            return SunsetDateTime.AddMinutes(PostSunsetDelay).Subtract(signalTime).TotalSeconds;
+            return ShabbatTime.AddMinutes(PostShabbatDelay).Subtract(signalTime).TotalSeconds;
         }
 
         public void Start()

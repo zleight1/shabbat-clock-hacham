@@ -9,7 +9,7 @@
     <Grid>
         <TextBlock x:Name="lblTopInformation" HorizontalAlignment="Center" Height="89" Margin="0,18,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="400"/>
         <TextBlock x:Name="lblCountdown" HorizontalAlignment="Center" Height="89" Margin="0,156,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="400"/>
-        <Button x:Name="ToggleShabbatTimerButton" Content="" HorizontalAlignment="Center" Margin="0,324,0,0" VerticalAlignment="Top" Height="100" Width="400" TouchUp="ToggleShabbatTimerHandler" MouseUp="ToggleShabbatTimerHandler"/>
+        <Button x:Name="ToggleShabbatTimerButton" Content="" HorizontalAlignment="Center" Margin="0,324,0,0" VerticalAlignment="Top" Height="100" Width="400" Click="ToggleShabbatTimerHandler"/>
 
     </Grid>
 </Window>

@@ -39,9 +39,9 @@ namespace ShabbatClockHaCham
             this.ShutdownInteropService = new ShutdownInteropService();
             this.ZmanimService = new ZmanimService();
             var location = @"";
-            double postShabbatDelay = 18;
-            DateTime sunset = ZmanimService.ResolveSunsetDateTime(location);
-            this.ShabbatClockTimer = new ShabbatTimer(sunset, postShabbatDelay);
+            double postShabbatDelay = -2;
+            DateTime shabbatTime = ZmanimService.ResolveShabbatTime(location);
+            this.ShabbatClockTimer = new ShabbatTimer(shabbatTime, postShabbatDelay);
             this.ShabbatClockTimer.ShabbatTick += ShabbatTickHandler;
             this.lblTopInformation.Text = "Your location is X";
             this.lblCountdown.Text = "00:00:00";
@@ -72,8 +72,9 @@ namespace ShabbatClockHaCham
             }
         }
 
-        private void ToggleShabbatTimerHandler(object sender, MouseButtonEventArgs e)
+        private void ToggleShabbatTimerHandler(object sender, RoutedEventArgs e)
         {
+            
             if (this.ShabbatClockTimer.Enabled)
             {
                 this.ShabbatClockTimer.Stop();
